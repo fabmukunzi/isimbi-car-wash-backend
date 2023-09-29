@@ -24,7 +24,11 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       role: {
         type: DataTypes.STRING,
-        defaultValue: 'client',
+        defaultValue: 'Admin',
+      },
+      isApproved:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       phone: DataTypes.STRING,
       avatar: DataTypes.STRING,

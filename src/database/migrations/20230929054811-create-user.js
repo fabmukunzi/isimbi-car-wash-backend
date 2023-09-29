@@ -21,6 +21,9 @@ module.exports = {
       role: {
         type: Sequelize.STRING
       },
+      isApproved:{
+        type: Sequelize.BOOLEAN
+      },
       phone: {
         type: Sequelize.STRING
       },

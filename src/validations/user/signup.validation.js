@@ -20,7 +20,7 @@ const validateRegister = async (req, res, next) => {
   const { error } = registerSchema.validate(req.body);
   if (error) {
     return res.status(400).json({
-      error: error.details[0].message.replace(/[^a-zA-Z0-9 ]/g, ''),
+      message: error.details[0].message.replace(/[^a-zA-Z0-9 ]/g, ''),
     });
   }
   next();
