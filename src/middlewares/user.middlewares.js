@@ -24,8 +24,8 @@ export const getUserByEmail = async (req, res, next) => {
 
 export const checkUserApproved = async (req, res, next) => {
   const user = req.user;
-  if (!user.isApproved) {
-    return res.status(409).json({ message: 'This account is not approved' });
+  if (user?.role==="Admin"&&!user.isApproved) {
+    return res.status(409).json({ message: 'This account is not Enabled' });
   }
   next();
 };

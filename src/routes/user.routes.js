@@ -1,5 +1,12 @@
 import express from 'express';
-import { getProfile, login, logout, signup } from '../controllers/user.controller';
+import {
+  accountStatus,
+  getAllUsers,
+  getProfile,
+  login,
+  logout,
+  signup,
+} from '../controllers/user.controller';
 import validateRegister from '../validations/user/signup.validation';
 import {
   CheckLoginPassword,
@@ -8,7 +15,7 @@ import {
   getUserByEmail,
 } from '../middlewares/user.middlewares';
 import validateLogin from '../validations/user/login.validation';
-import { protectRoute } from '../middlewares/auth.middleware';
+import { protectRoute, restrictTo } from '../middlewares/auth.middleware';
 
 const userRoutes = express.Router();
 userRoutes.post('/register', validateRegister, checkIfUserExists, signup);
@@ -21,7 +28,8 @@ userRoutes.post(
   login
 );
 userRoutes.get('/profile', protectRoute, getProfile);
-userRoutes.get('/logout', logout);
-
+userRoutes.get('/logout',protectRoute, logout);
+userRoutes.get('/',protectRoute, restrictTo('Super Admin'),getAllUsers);
+userRoutes.put('/disable-enable/:id',protectRoute, restrictTo('Super Admin'),accountStatus);
 
 export default userRoutes;
