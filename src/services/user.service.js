@@ -10,7 +10,8 @@ export class UserService {
   static async getUsers() {
     return User.findAll();
   }
-  static async updateUser(fields, id) {
+  static async updateUser({ fields }, id) {
+    console.log({ ...fields }, 'service');
     return await User.update({ ...fields }, { where: { id: id } });
   }
 }

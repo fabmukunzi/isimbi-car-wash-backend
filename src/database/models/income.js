@@ -3,12 +3,12 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Report extends Model {
+  class Income extends Model {
     static associate(models) {
       // define association here
     }
   }
-  Report.init({
+  Income.init({
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -17,14 +17,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: DataTypes.STRING,
     category: DataTypes.STRING,
-    delivery_cost: DataTypes.INTEGER,
-    quantity: DataTypes.INTEGER,
-    price: DataTypes.INTEGER,
     attachments: DataTypes.ARRAY(DataTypes.STRING),
-    report_date: DataTypes.STRING
+    report_date: DataTypes.STRING,
+    amount: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'Report',
+    modelName: 'Income',
   });
-  return Report;
+  return Income;
 };

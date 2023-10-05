@@ -1,11 +1,34 @@
 import express from 'express';
-import { getReports, report } from '../controllers/report.controller';
+import {
+  expenseReport,
+  getExpenses,
+  getIncomes,
+  incomeReport,
+  report,
+} from '../controllers/report.controller';
 import { protectRoute } from '../middlewares/auth.middleware';
 import { uploadImages } from '../middlewares/report.middleware';
-import validateReports from '../validations/report/reports.validation';
+import {
+  validateReports,
+  validateIncome,
+} from '../validations/report/reports.validation';
 
 const reportRoutes = express.Router();
-reportRoutes.post('/', protectRoute, validateReports, uploadImages, report);
-reportRoutes.get('/', getReports);
+reportRoutes.post(
+  '/expenses',
+  protectRoute,
+  validateReports,
+  uploadImages,
+  expenseReport
+);
+reportRoutes.post(
+  '/incomes',
+  protectRoute,
+  validateIncome,
+  uploadImages,
+  incomeReport
+);
+reportRoutes.get('/expenses', getExpenses);
+reportRoutes.get('/incomes', getIncomes);
 
 export default reportRoutes;

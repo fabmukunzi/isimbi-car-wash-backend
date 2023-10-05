@@ -10,7 +10,7 @@ export const signup = async (req, res) => {
     const result = await UserService.register(user);
     const { id, email, role } = result;
     const userData = { id, email, role };
-    const userToken = JwtUtility.generateToken(userData, '1h');
+    const userToken = JwtUtility.generateToken(userData, '30d');
     res
       .status(201)
       .json({ message: 'Registered successfully', token: userToken });
@@ -30,6 +30,7 @@ export const login = async (req, res) => {
       lastname,
       createdAt,
       email,
+      phone,
       isApproved,
       avatar,
       role,
@@ -41,6 +42,7 @@ export const login = async (req, res) => {
       email,
       isApproved,
       avatar,
+      phone,
       role,
       createdAt,
     };
@@ -89,6 +91,7 @@ export const getAllUsers = async (req, res) => {
         firstname,
         lastname,
         createdAt,
+        updatedAt,
         email,
         isApproved,
         avatar,
@@ -100,6 +103,7 @@ export const getAllUsers = async (req, res) => {
         firstname,
         lastname,
         createdAt,
+        updatedAt,
         email,
         isApproved,
         avatar,
@@ -125,7 +129,8 @@ export const accountStatus = async (req, res) => {
   const { id } = req.params;
   try {
     const isApproved = req.body.isApproved;
-    await UserService.updateUser({ isApproved }, id);
+    const fields = { isApproved };
+    await UserService.updateUser({ fields }, id);
     if (!isApproved) {
       return res.status(200).json({ message: 'Account is disabled' });
     } else {
@@ -135,6 +140,33 @@ export const accountStatus = async (req, res) => {
     return res.status(500).json({
       error: error.message,
       message: 'Failed to update',
+    });
+  }
+};
+export const updateUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const fields = { ...req.body };
+    const user = await UserService.updateUser({ fields }, id);
+    return res.status(200).json({ message: 'User Updated Successfully', user });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message,
+      message: 'Failed to update',
+    });
+  }
+};
+
+export const updatePassword = async (req, res) => {
+  try {
+    const password = await BcryptUtility.hashPassword(req.body.new_password);
+    const fields = { password };
+    const result = await UserService.updateUser({ fields }, req.user.id);
+    return res.status(200).json({ message: 'Password updated successfully' });
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+      message: 'Failed to update the password',
     });
   }
 };
