@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import { tokenBlacklist } from '../utils/constants';
 // import { isAuthRevoked } from '../utils/logout.util.js';
 
 dotenv.config();
@@ -13,17 +14,15 @@ export const protectRoute = async (req, res, next) => {
         return res
           .status(401)
           .json({ message: 'Unauthorized request, try again' });
+      } else if (tokenBlacklist.includes(authToken)) {
+        return res
+          .status(401)
+          .json({ message: 'Unauthorized request, try again' });
+      } else {
+        req.user = user;
+        req.token = token;
+        next();
       }
-      //   const revokedToken = await isAuthRevoked(token);
-      //   if (!revokedToken || revokedToken.revoked) {
-      //     return res
-      //       .status(401)
-      //       .json({ message: 'You are not authorized to access' });
-      //   } else {
-      req.user = user;
-      req.token = token;
-      next();
-      //   }
     });
   } catch (err) {
     return res
