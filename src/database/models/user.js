@@ -26,12 +26,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: 'Admin',
       },
-      isApproved:{
+      isApproved: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
       phone: DataTypes.STRING,
-      avatar: DataTypes.STRING,
+      avatar: {
+        type: DataTypes.STRING,
+        defaultValue:
+          'https://res.cloudinary.com/dagurahkl/image/upload/v1696691313/480px-User-avatar.svg_bhghjd.png',
+      },
       password: DataTypes.STRING,
     },
     {

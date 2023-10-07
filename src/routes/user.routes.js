@@ -3,6 +3,8 @@ import {
   accountStatus,
   getAllUsers,
   getProfile,
+  googleAuth,
+  googleAuthLogin,
   login,
   logout,
   signup,
@@ -12,6 +14,7 @@ import {
 import validateRegister from '../validations/user/signup.validation';
 import {
   CheckLoginPassword,
+  checkIfGUserExists,
   checkIfUserExists,
   checkUserApproved,
   checkValidOldPassword,
@@ -19,9 +22,15 @@ import {
   uploadAvatar,
 } from '../middlewares/user.middlewares';
 import validateLogin from '../validations/user/login.validation';
-import { protectRoute, restrictTo } from '../middlewares/auth.middleware';
+import {
+  googlePass,
+  protectRoute,
+  restrictTo,
+} from '../middlewares/auth.middleware';
+import passport from 'passport';
 
 const userRoutes = express.Router();
+googlePass();
 userRoutes.post('/register', validateRegister, checkIfUserExists, signup);
 userRoutes.post(
   '/login',
@@ -31,7 +40,23 @@ userRoutes.post(
   checkUserApproved,
   login
 );
+userRoutes.get(
+  '/auth/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] })
+);
+
+userRoutes.get(
+  '/auth/google/callback',
+  passport.authenticate('google', {
+    session: false,
+    failureRedirect: '/',
+  }),
+  checkIfGUserExists,
+  googleAuth
+);
+
 userRoutes.get('/profile', protectRoute, getProfile);
+userRoutes.get('/auth/google', googleAuth);
 userRoutes.get('/logout', protectRoute, logout);
 userRoutes.get('/', protectRoute, getAllUsers);
 userRoutes.put('/disable-enable/:id', protectRoute, accountStatus);
