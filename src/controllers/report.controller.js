@@ -80,6 +80,7 @@ export const analytics = async (req, res) => {
     const weeklyIncome = extractWeeklyReport(incomes);
     const expenses = await ReportService.getExpenses();
     const weeklyExpenses = extractWeeklyReport(expenses);
+    const isAnalytics=(incomes.length>0||expenses.length>0)??true
     const weeklyProfit = [];
     for (let i = 0; i < 4; i++)
       weeklyProfit.push(weeklyIncome[i] - weeklyExpenses[i]);
@@ -100,6 +101,7 @@ export const analytics = async (req, res) => {
       weeklyPerformanceOverview: og,
       weeklyExpenses,
       groupedByCategory,
+      isAnalytics
     });
   } catch (err) {
     return res.status(500).json({

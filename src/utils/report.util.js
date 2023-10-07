@@ -11,7 +11,7 @@ export const extractWeeklyReport = (data) => {
     const totalIncome = data.reduce((total, report) => {
       const reportDate = new Date(report.report_date);
       if (reportDate >= startDate && reportDate <= endDate) {
-        return total + (report.quantity * report.price + report.delivery_cost);
+        return total + (report.quantity * report.price + report.delivery_cost||report.amount);
       }
       return total;
     }, 0);

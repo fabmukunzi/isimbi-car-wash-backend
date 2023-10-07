@@ -1,7 +1,9 @@
+import passport from 'passport';
 import { UserService } from '../services/user.service';
 import { BcryptUtility } from '../utils/bcrypt.util';
 import { tokenBlacklist } from '../utils/constants';
 import { JwtUtility } from '../utils/jwt.util';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 
 export const signup = async (req, res) => {
   try {
@@ -10,7 +12,7 @@ export const signup = async (req, res) => {
     const result = await UserService.register(user);
     const { id, email, role } = result;
     const userData = { id, email, role };
-    const userToken = JwtUtility.generateToken(userData, '30d');
+    const userToken = JwtUtility.generateToken(userData, '1y');
     res
       .status(201)
       .json({ message: 'Registered successfully', token: userToken });
@@ -74,7 +76,6 @@ export const getProfile = async (req, res) => {
 
 export const logout = (req, res) => {
   const token = req.headers.authorization;
-  console.log(token);
   if (token) {
     tokenBlacklist.push(token);
   }
@@ -170,3 +171,17 @@ export const updatePassword = async (req, res) => {
     });
   }
 };
+
+export const googleAuth = async (req, res) => {
+  const { value } = req.user.emails[0];
+  const { familyName, givenName } = req.user.name;
+  const newUser = {
+    firstname: familyName,
+    lastname: givenName,
+    email: value,
+    avatar: req.user.photos[0].value,
+  };
+  const { id, email } = await UserService.register(newUser);
+  return res.redirect(process.env.REDIRECT_URL);
+};
+

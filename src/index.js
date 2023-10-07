@@ -3,10 +3,22 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import routes from './routes';
 import fileUpload from 'express-fileupload';
+import passport from 'passport';
+import session from 'express-session';
+
 dotenv.config();
 
 const app = express();
 
+app.use(
+  session({
+    secret: 'hello',
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cors())
 app.use(
   fileUpload({
