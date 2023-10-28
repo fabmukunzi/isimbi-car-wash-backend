@@ -1,12 +1,9 @@
 {
   "development": {
-    "url": "postgres://isimbi_car_wash_user:drswjw1sPwsfxO3vOOn5e9iQGHEKVEAL@dpg-ckb0dmmsmu8c739ogrrg-a.oregon-postgres.render.com/isimbi_car_wash",
+    "url": "postgres://newUser:password@127.0.0.1:5432/mydatabase",
     "dialect": "postgres",
     "dialectOptions": {
-      "ssl": {
-        "require": true,
-        "rejectUnauthorized": false
-      }
+      
     },
     "logging": false
   },

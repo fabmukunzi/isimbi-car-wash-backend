@@ -12,14 +12,14 @@ module.exports = {
       customerId: {
         type: Sequelize.UUID,
         references: {
-          model: "User",
+          model: "Users",
           key: "id",
         },
       },
       washerId: {
         type: Sequelize.UUID,
         references: {
-          model: "User",
+          model: "Users",
           key: "id",
         },
       },
@@ -59,7 +59,7 @@ module.exports = {
         type: Sequelize.FLOAT,
       },
       washerStatus: {
-        types: Sequelize.DataTypes.STRING,
+        type: Sequelize.DataTypes.STRING,
         defaultValue: "progress",
       },
       createdAt: {
