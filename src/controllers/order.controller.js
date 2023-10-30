@@ -53,7 +53,7 @@ export const getSingleOrder = async (req, res) => {
 export const getAllOrdersForUser = async (req, res) => {
   try {
     const { clientId } = req.params;
-    const orders = await OrderService.getAllOrdersForUser(clientId);
+    const orders = await OrderService.getOrdersByColumn("customerId", clientId);
     return res
       .status(200)
       .json({ message: "Order retrieved successfully", orders });
@@ -68,7 +68,7 @@ export const getAllOrdersForUser = async (req, res) => {
 export const getAllOrdersForWasher = async (req, res) => {
   try {
     const { washerId } = req.params;
-    const orders = await OrderService.getAllOrdersForWasher(washerId);
+    const orders = await OrderService.getOrdersByColumn("washerId", washerId);
     return res
       .status(200)
       .json({ message: "Order retrieved successfully", orders });

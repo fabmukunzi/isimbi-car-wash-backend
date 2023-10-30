@@ -9,16 +9,10 @@ export class OrderService {
     return Order.findByPk(id);
   }
 
-  static async getAllOrdersForUser(userId) {
+  static async getOrdersByColumn(column, value) {
     return Order.findAll({
-      // order: [["createdAt", "DESC"]],
-      where: { customerId: userId },
-    });
-  }
-
-  static async getAllOrdersForWasher(userId) {
-    return Order.findAll({
-      where: { washerId: userId },
+      order: [["createdAt", "DESC"]],
+      where: { [column]: value },
     });
   }
 }
