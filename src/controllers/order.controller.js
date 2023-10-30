@@ -45,7 +45,7 @@ export const getSingleOrder = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       error: err.message,
-      message: "Failed to create an order",
+      message: "Failed to fetch an order",
     });
   }
 };
@@ -56,11 +56,11 @@ export const getAllOrdersForUser = async (req, res) => {
     const orders = await OrderService.getOrdersByColumn("customerId", clientId);
     return res
       .status(200)
-      .json({ message: "Order retrieved successfully", orders });
+      .json({ message: "Orders retrieved successfully", orders });
   } catch (err) {
     res.status(500).json({
       error: err.message,
-      message: "Failed to fetch an order",
+      message: "Failed to fetch an orders",
     });
   }
 };
@@ -71,11 +71,11 @@ export const getAllOrdersForWasher = async (req, res) => {
     const orders = await OrderService.getOrdersByColumn("washerId", washerId);
     return res
       .status(200)
-      .json({ message: "Order retrieved successfully", orders });
+      .json({ message: "Orders retrieved successfully", orders });
   } catch (err) {
     res.status(500).json({
       error: err.message,
-      message: "Failed to fetch an order",
+      message: "Failed to fetch an orders",
     });
   }
 };
