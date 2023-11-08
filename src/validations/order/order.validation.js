@@ -5,6 +5,8 @@ export const validateOrder = async (req, res, next) => {
     scheduledTime: Joi.date().iso().required(),
     address: Joi.object(),
     carPlate: Joi.string().required(),
+    names: Joi.string().min(3).max(255).required(),
+    phoneNumber: Joi.string().min(10).max(13).required(),
     serviceType: Joi.string().required(),
     price: Joi.number().integer().required(),
     time: Joi.string().required(),

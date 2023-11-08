@@ -16,6 +16,12 @@ module.exports = {
           key: "id",
         },
       },
+      names: {
+        type: Sequelize.STRING,
+      },
+      phoneNumber: {
+        type: Sequelize.STRING,
+      },
       washerId: {
         type: Sequelize.UUID,
         references: {

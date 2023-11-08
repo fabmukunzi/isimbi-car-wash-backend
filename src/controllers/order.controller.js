@@ -11,6 +11,8 @@ export const createOrder = async (req, res) => {
       price,
       time,
       carModel,
+      phoneNumber,
+      names,
     } = req.body;
 
     const order = {
@@ -20,6 +22,8 @@ export const createOrder = async (req, res) => {
       serviceType,
       price,
       carModel,
+      phoneNumber,
+      names,
       time,
       address: JSON.stringify(address),
     };
