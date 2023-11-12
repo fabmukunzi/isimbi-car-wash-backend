@@ -1,4 +1,5 @@
 import { OrderService } from "../services/order.service";
+import { eventEmit, knownEvents } from "../utils/events.util";
 
 export const createOrder = async (req, res) => {
   try {
@@ -29,6 +30,9 @@ export const createOrder = async (req, res) => {
     };
 
     const newOrder = await OrderService.createOrder(order);
+
+    eventEmit(knownEvents.orderCreated, newOrder.id); // Emit an event to the subscribers of this event
+
     res.status(201).json({ message: "Order created successfully", newOrder });
   } catch (err) {
     res.status(500).json({

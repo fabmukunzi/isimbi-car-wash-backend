@@ -15,4 +15,8 @@ export class OrderService {
       where: { [column]: value },
     });
   }
+
+  static async updateOrder(id, updates) {
+    return Order.update(updates, { where: { id } });
+  }
 }

@@ -6,6 +6,7 @@ import { sequelize } from "./database/models";
 import fileUpload from "express-fileupload";
 import passport from "passport";
 import session from "express-session";
+import { listenOrderCreated } from "./utils/listenEvent";
 
 dotenv.config();
 
