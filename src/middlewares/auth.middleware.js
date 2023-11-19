@@ -1,48 +1,44 @@
-import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken';
-import { tokenBlacklist } from '../utils/constants';
-import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
-// import { isAuthRevoked } from '../utils/logout.util.js';
+import dotenv from "dotenv";
+import passport from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth2";
+import { User } from "../database/models/index.js";
+import { JwtUtility } from "../utils/jwt.util";
 
 dotenv.config();
 
 export const protectRoute = async (req, res, next) => {
   try {
-    let authToken = req.header('Authorization') || '';
-    let token = authToken.split(' ')[1];
-    jwt.verify(token, process.env.SECRET_TOKEN, async (err, user) => {
-      if (err) {
-        return res
-          .status(401)
-          .json({ message: 'Unauthorized request, try again' });
-      } else if (tokenBlacklist.includes(authToken)) {
-        return res
-          .status(401)
-          .json({ message: 'Unauthorized request, try again' });
-      } else {
-        req.user = user;
-        req.token = token;
-        next();
-      }
+    if (!req.header("Authorization")) {
+      return res.status(401).json({ status: 401, message: "Please sign in" });
+    }
+    const token = req.header("Authorization").split(" ")[1];
+
+    const details = JwtUtility.verifyToken(token);
+
+    const userExists = await User.findOne({
+      where: { email: details.email },
     });
+    if (!userExists) {
+      return res.status(401).json({ status: 401, message: "Please Login!" });
+    }
+    req.user = userExists;
+    next();
   } catch (err) {
     return res
-      .status(500)
-      .json({ error: err.message, message: 'Something went wrong, try again' });
+      .status(401)
+      .json({ status: 401, message: "No valid credentials" });
   }
 };
 export const restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
-        message: 'You are not allowed to perform this task',
+        message: "You are not allowed to perform this task",
       });
     }
     next();
   };
 };
-
 
 export const googlePass = () => {
   passport.use(

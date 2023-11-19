@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       receivers: {
-        type: Sequelize.ARRAY
+        type: Sequelize.ARRAY(Sequelize.STRING)
       },
       content: {
         type: Sequelize.STRING

@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Message.init({
     sender: DataTypes.STRING,
-    receivers: DataTypes.ARRAY,
+    receivers: DataTypes.ARRAY(DataTypes.STRING),
     content: DataTypes.STRING
   }, {
     sequelize,
