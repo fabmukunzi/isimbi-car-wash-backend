@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.belongsTo(models.Order, { foreignKey: "currentOrderId" });
     }
   }
   Washer.init(
@@ -19,10 +19,19 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
+      currentOrderId: {
+        type: DataTypes.UUID,
+        references: { model: "Order", key: "id" },
+      },
+      status: {
+        type: DataTypes.ENUM("Available", "Unavailable"),
+        defaultValue: "Unavailable",
+      },
       name: DataTypes.STRING,
       email: DataTypes.STRING,
       phone: DataTypes.STRING,
-      address: DataTypes.STRING,
+      address: DataTypes.JSONB,
+      rating: DataTypes.INTEGER,
     },
 
     {
